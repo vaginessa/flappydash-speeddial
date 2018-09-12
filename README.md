@@ -1,4 +1,4 @@
-# flappydash
+#flappydash
 
 This is a small fork of Sascha Diercks' browserStartpage.
 
