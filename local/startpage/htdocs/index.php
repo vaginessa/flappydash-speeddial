@@ -25,6 +25,10 @@
 	echo isset($theme)? 'class="'.$theme.'"' : FALSE;
 ?>>
 <head>
+
+    <!-- open links in a new page -->
+	<base target="_blank">
+
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<?php
 		echo isset($projectTitle) ? '<title>'.$projectTitle.'</title>' : FALSE;
