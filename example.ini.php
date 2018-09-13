@@ -1,0 +1,37 @@
+; <?php die("Access denied"); ?>
+[general]
+version = "1.082"
+title = "dash"
+password = "$2y$10$kT8nIvDKPzxdHyYmfywt.ee1LSdaSIRFLXfS0qb95l2XUWU.WjUq2"
+useicons = "true"
+bg = "#f0f0f0"
+tabborder = "#f9f9f9"
+tabhighlight = "#f9f9f9"
+tabcoloractive = "#f9f9f9"
+fontcoloractive = "#193045"
+tabshadowactive = "#ffffff"
+tabcolor = "#ffffff"
+fontcolor = "#7f8a94"
+tabshadow = "#ffffff"
+[Start]
+url = "http://10.8.8.8/flappydash/local/startpage/htdocs/"
+group = "1"
+icon = "fa-star"
+default = "true"
+enabled = "true"
+guest = "true"
+[Luci]
+url = "http://10.8.8.8/flappydash/local/404"
+group = "1"
+icon = "fa-tasks"
+enabled = "true"
+guest = "true"
+[Next]
+url = "http://10.8.8.8/nextcloud"
+group = "1"
+icon = "fa-folder-open"
+enabled = "true"
+guest = "true"
+[groups]
+groupA = ""
+groups = "1"
