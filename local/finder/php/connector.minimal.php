@@ -93,6 +93,7 @@ elFinder::$netDrivers['ftp'] = 'FTP';
 // define('ELFINDER_DISABLE_ZIPEDITOR', false); // set `true` to disable zip editor
 // ===============================================
 
+
 /**
  * Simple function to demonstrate how to control file access using "accessControl" callback.
  * This method will disable accessing files/folders starting from '.' (dot)
@@ -117,20 +118,51 @@ function access($attr, $path, $data, $volume, $isDir, $relpath) {
 // Documentation for connector options:
 // https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options
 $opts = array(
-	// 'debug' => true,
+	'debug' => true,  // FIX/RESTRICT PERMISSIONS BEFORE MERGING INTO MASTER!!
 	'roots' => array(
 		// Items volume
 		array(
 			'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
 			'path'          => '../files/',                 // path to files (REQUIRED)
 			'URL'           => dirname($_SERVER['PHP_SELF']) . '/../files/', // URL to files (REQUIRED)
-			'trashHash'     => 't1_Lw',                     // elFinder's hash of trash folder
+
+			//'trashHash'     => 't1_Lw',                     // elFinder's hash of trash folder
+
+			// NOTE: commenting out 'trashHash' fixes this error message:
+			// 'Trash hash "t1_Lw" was not found or not writable.'
+			// see: https://github.com/Studio-42/elFinder/issues/2067
+
 			'winHashFix'    => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
-			'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
-			'uploadAllow'   => array('image', 'text/plain'),// Mimetype `image` and `text/plain` allowed to upload
-			'uploadOrder'   => array('deny', 'allow'),      // allowed Mimetype `image` and `text/plain` only
-			'accessControl' => 'access'                     // disable and hide dot starting files (OPTIONAL)
+		//	'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
+		//	'uploadAllow'   => array('image', 'text/plain'),// Mimetype `image` and `text/plain` allowed to upload
+		//	'uploadOrder'   => array('deny', 'allow'),      // allowed Mimetype `image` and `text/plain` only
+
+			'accessControl' => 'disabled'                     // disable and hide dot starting files (OPTIONAL)
+		//   NOTE: opposite of 'disabled' is 'access'	
+		
 		),
+
+   array(
+    'driver'        => 'LocalFileSystem',
+    'uploadAllow'   => array('all'),
+    'accessControl' => 'disabled',
+            'path'          => '../../startpage/htdocs/data/',
+            'URL'           => dirname($_SERVER['PHP_SELF']) . '../../startpage/htdocs/data/',
+            'alias'         => 'Config file',
+            //'uploadAllow' => array('image', 'text/plain', 'text/json'),
+            'defaults' => array('read' => true, 'write' => true, 'locked' => false, 'hidden' => false)            
+            
+            // THIS IS VERY BAD, FIX/RESTRICT PERMISSIONS BEFORE MERGING INTO MASTER!!       
+
+        ),
+
+        array(
+            'driver'        => 'LocalFileSystem',
+            'path'          => '../../startpage/htdocs/assets/thumbnails/',
+            'URL'           => '../startpage/htdocs/assets/thumbnails/',
+            'alias'         => 'Startpage thumbnails'
+        ), 
+
 		// Trash volume
 		array(
 			'id'            => '1',
@@ -138,10 +170,10 @@ $opts = array(
 			'path'          => '../files/.trash/',
 			'tmbURL'        => dirname($_SERVER['PHP_SELF']) . '/../files/.trash/.tmb/',
 			'winHashFix'    => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
-			'uploadDeny'    => array('all'),                // Recomend the same settings as the original volume that uses the trash
-			'uploadAllow'   => array('image', 'text/plain'),// Same as above
-			'uploadOrder'   => array('deny', 'allow'),      // Same as above
-			'accessControl' => 'access',                    // Same as above
+			//'uploadDeny'    => array('all'),                // Recomend the same settings as the original volume that uses the trash
+			//'uploadAllow'   => array('image', 'text/plain'),// Same as above
+			//'uploadOrder'   => array('deny', 'allow'),      // Same as above
+			//'accessControl' => 'access',                    // Same as above, NOTE: opposite of 'access' is 'disabled'
 		)
 	)
 );
@@ -149,4 +181,5 @@ $opts = array(
 // run elFinder
 $connector = new elFinderConnector(new elFinder($opts));
 $connector->run();
+
 
